@@ -1,3 +1,46 @@
+
+import streamlit as st
+
+# ============ Optimized Password Protection ============
+def check_password():
+    """Returns `True` if the user enters the correct password."""
+    # Password (change this to your desired password)
+    CORRECT_PASSWORD = "college_chatbot@sobhan"  # <<<< এখানে তোমার পাসওয়ার্ড লিখো
+
+    def password_entered():
+        """Checks whether a password entered by the user is correct."""
+        if st.session_state["password"] == CORRECT_PASSWORD:
+            st.session_state["password_correct"] = True
+            del st.session_state["password"]  # Remove password from session state
+        else:
+            st.session_state["password_correct"] = False
+
+    # Return True if password is correct
+    if st.session_state.get("password_correct", False):
+        return True
+
+    # Show input for password
+    st.text_input(
+        "🔒 Enter Password to access the app",
+        type="password",
+        on_change=password_entered,
+        key="password",
+        placeholder="Type password here"
+    )
+
+    if "password_correct" in st.session_state and not st.session_state["password_correct"]:
+        st.error("😕 Wrong password! Try again")
+
+    return False
+
+# Only run the main app if password is correct
+if check_password():
+    # ============= Your entire existing chatbot code starts here =============
+    # Paste all your previous code below this line
+    st.title("🌟 My College AI Assistant 🌟")
+    # ... rest of your RAG, attendance, tabs, etc.
+else:
+    st.stop()  # Stop the app if password is not correct
 # Import required libraries
 import streamlit as st
 import os
